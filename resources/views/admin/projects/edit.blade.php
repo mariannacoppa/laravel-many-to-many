@@ -25,7 +25,7 @@
                         <label for="" class="control-label">Nome progetto</label>
                         <input type="text" name="name" id=""
                             class="form-control form-control-sm @error('name') is-invalid @enderror"
-                            placeholder="Nome pogetto" value="{{ old('name', $project->name) }}">
+                            placeholder="Nome progetto" value="{{ old('name', $project->name) }}">
                         @error('name')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -54,12 +54,31 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <label for="" class="control-label">Sommario progetto</label>
-                        <textarea name="summary" id="" cols="30" rows="10" class="form-control form-control-sm"
-                            placeholder="Nome pogetto">{{ old('summary', $project->summary) }}</textarea>
+                        <label for="" class="control-label">Seelziona le tecnologie</label>
+                        <div>
+                            @foreach ($technologies as $technology)
+                            <div class="form-check-inline">
+                                @if ($errors->any())
+                                <input type="checkbox" name="technologies[]" id="" class="form-check-inline"
+                                    value="{{ $technology->id }}" {{ in_array($technology->id, old('technologies')) ?
+                                'checked' : '' }}>
+                                @else
+                                <input type="checkbox" name="technologies[]" id="" class="form-check-inline"
+                                    value="{{ $technology->id }}" {{ $project->technologies->contains($technology->id) ?
+                                'checked' : '' }}>
+                                @endif
+                                <label class="form-check-label">{{ $technology->name }}</label>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-sm btn-success">Salva</button>
+                        <label for="" class="control-label">Sommario progetto</label>
+                        <textarea name="summary" id="" cols="30" rows="10" class="form-control form-control-sm"
+                            placeholder="Nome progetto">{{ old('summary', $project->summary) }}</textarea>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-sm btn-success my-2">Salva</button>
                     </div>
                 </div>
             </form>
