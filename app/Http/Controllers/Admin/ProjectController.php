@@ -139,6 +139,9 @@ class ProjectController extends Controller
             Storage::delete($project->image);
         }
 
+        // se non uso il metodo cascadeOnDelete nella request devo scrivere qui:
+        // $project->technologies()->sync([]);
+
         $project->delete();
         return redirect()->route('admin.projects.index');
     }
