@@ -113,6 +113,16 @@ class ProjectController extends Controller
 
         $form_data['slug'] = Project::generateSlug($form_data['name']);
         $project->update($form_data);
+
+        if($request->has('technologies')){
+            // se ci sono tecnologie le mostro
+            $project->technologies()->sync($request->technologies);
+        }
+        // se non ci sono, sono state deselezionate e devo cancellare le tecnologie
+        else{
+            $project->technologies()->sync([]);
+        }   
+
         return redirect()->route('admin.projects.index');
     }
 
