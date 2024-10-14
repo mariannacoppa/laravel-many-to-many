@@ -43,6 +43,25 @@
                         </select>
                     </div>
                     <div class="col-12">
+                        <label for="" class="control-label">Seelziona le tecnologie</label>
+                        <div>
+                            @foreach ($technologies as $technology)
+                            <div class="form-check-inline">
+                                <input type="checkbox" name="technologies[]" id="" class="form-check-inline" {{-- le []
+                                    nel name consentono di prendere tutti gli oggetti nell'array. Se omesse, verrà
+                                    visualizzato solo l'ultimo elemento dell'array --}} value="{{ $technology->id }}" {{
+                                    is_array(old('technologies')) && in_array($technology->id, old('technologies')) ?
+                                'checked' : '' }}
+                                {{-- al posto dell'operatore ternario si può scrivere @checked --}}
+                                {{-- @checked(is_array(old('technologies')) && in_array($technology->id,
+                                old('technologies'))) --}}
+                                >
+                                <label class="form-check-label">{{ $technology->name }}</label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="col-12">
                         <label for="" class="control-label">Sommario progetto</label>
                         <textarea name="summary" id="" cols="30" rows="10" class="form-control form-control-sm"
                             placeholder="Nome progetto">{{ old('summary') }}</textarea>

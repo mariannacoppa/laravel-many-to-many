@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Technology;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -31,7 +32,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -54,6 +56,13 @@ class ProjectController extends Controller
         $form_data['slug'] = Project::generateSlug($form_data['name'], '-');
         $project->fill($form_data);
         $project->save();
+
+        if($request->has('technologies')){
+            // se request ha una nuova tecnologia, creo un nuovo record nella tabella ponte
+            $technologies = $request->technologies;
+            $project->technologies()->attach($technologies);
+        }
+
         return redirect()->route('admin.projects.index');
     }
 
@@ -101,7 +110,7 @@ class ProjectController extends Controller
             $form_data['image'] = $path;
         }
 
-        $forma_data['slug'] = Project::generateSlug($form_data['name']);
+        $form_data['slug'] = Project::generateSlug($form_data['name']);
         $project->update($form_data);
         return redirect()->route('admin.projects.index');
     }
