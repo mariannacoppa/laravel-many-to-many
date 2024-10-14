@@ -10,6 +10,13 @@
                 src="{{ $project->image !== null ? asset('./storage/'.$project->image) : 'https://placehold.co/400' }}"
                 alt="{{ $project->name }}">
             <p>{{ $project->slug }}</p>
+            <p>
+                @forelse($project->technologies as $technology)
+                {{ $technology->name }}
+                @empty
+                Nessuna tecnologia selezionata per il progetto
+                @endempty
+            </p>
             <p>{{ $project->summary }}</p>
         </div>
     </div>
